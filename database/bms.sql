@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 
 --
 -- Database: `bms`
---
+-- Create database name as given on sql page on php
 
 -- --------------------------------------------------------
 
