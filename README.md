@@ -1,44 +1,122 @@
-# banking_website
-banking website built with HTML, CSS, PHP, JavaScript, and a MySQL database. It allows users to view their account balance and make basic transactions.
+# Banking Website
 
-Components:
+The **Banking Website** is a simple web application that allows users to perform basic banking operations such as balance checking, withdrawal, and money transfer. This project demonstrates how core web technologies like **HTML**, **CSS**, **JavaScript**, **PHP**, and **MySQL** can be used to create a functional banking system.
 
-Frontend (HTML, CSS, JavaScript):
+## Features:
+- **Balance Check**: Users can log in and check their current account balance.
+- **Withdrawal**: Allows users to withdraw a specified amount from their account.
+- **Money Transfer**: Users can transfer money between accounts within the system.
+- **Transaction History**: Displays a log of all transactions performed by the user.
+- **User Authentication**: Simple login system for secure access.
 
-Login page for user authentication.
-Dashboard displaying current account balance.
-Transaction form for depositing or withdrawing funds.
-JavaScript might handle basic form validation and user interactions.
-Backend (PHP):
+## Technologies Used:
+- **HTML**: For structuring the web pages.
+- **CSS**: For styling and making the website responsive.
+- **JavaScript**: For client-side interactivity.
+- **PHP**: For server-side scripting and handling database operations.
+- **MySQL**: For storing user data, account balances, and transaction history.
 
-Connects to the MySQL database to verify user login credentials.
-Retrieves account balance information based on the logged-in user.
-Processes transaction requests (deposit or withdrawal) and updates the balance in the database.
-Sends error messages or confirmation messages back to the frontend.
-Database (MySQL):
+## Database Setup
+Before running the website, you'll need to set up the MySQL database:
 
-Stores user accounts with login information (username, password) and a balance field.
-Stores transaction history with details like date, amount, and type (deposit/withdrawal).
-Workflow:
+1. **Create the Database**  
+   Open your MySQL client (e.g., phpMyAdmin, MySQL Workbench) and run the following SQL query to create the database:
+   ```sql
+   CREATE DATABASE banking_system;
+   ```
 
-User logs in with username and password.
-PHP script validates credentials against the database.
-Upon successful login, the user is directed to the dashboard.
-The dashboard displays the current balance retrieved from the database for the specific user.
-User enters an amount and selects deposit or withdrawal in the transaction form.
-PHP script processes the transaction:
-Deposits: Adds the entered amount to the user's balance.
-Withdrawals: Subtracts the entered amount from the user's balance (with proper checks to prevent negative balances).
-The script updates the user's balance in the database.
-The user receives a confirmation or error message based on the transaction status.
-Security Considerations:
+2. **Create the Users Table**  
+   Run the following SQL query to create a table for storing user account information:
+   ```sql
+   CREATE TABLE users (
+       id INT AUTO_INCREMENT PRIMARY KEY,
+       username VARCHAR(50) NOT NULL,
+       password VARCHAR(100) NOT NULL,
+       balance DECIMAL(10,2) DEFAULT 0.00
+   );
+   ```
 
-This is a basic example and doesn't include crucial security features like secure password hashing and data encryption.
-Implementing proper security measures is essential for any real-world banking application.
-Further Enhancements:
+3. **Create the Transactions Table**  
+   Create a table for recording transaction history:
+   ```sql
+   CREATE TABLE transactions (
+       id INT AUTO_INCREMENT PRIMARY KEY,
+       user_id INT,
+       type VARCHAR(50),
+       amount DECIMAL(10,2),
+       date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+       FOREIGN KEY (user_id) REFERENCES users(id)
+   );
+   ```
 
-Transaction history showing past deposits and withdrawals.
-Transferring funds between accounts (requires additional functionalities).
+4. **Insert Sample User Data (Optional)**  
+   You can add a few users for testing purposes:
+   ```sql
+   INSERT INTO users (username, password, balance) VALUES
+   ('user1', 'password1', 5000.00),
+   ('user2', 'password2', 3000.00);
+   ```
+
+## Installation & Setup
+
+Follow these steps to set up the project locally:
+
+### 1. Clone the Repository
+Open your terminal and clone the repository:
+```bash
+git clone https://github.com/111faizan/banking_website.git
+```
+
+### 2. Navigate to the Project Directory
+```bash
+cd banking-website
+```
+
+### 3. Set Up the Server
+Make sure you have a local server running (e.g., **XAMPP**, **WAMP**, or **MAMP**). Place the project folder inside the server’s root directory (e.g., `htdocs` for XAMPP).
+
+### 4. Configure the Database Connection
+In the project folder, open the `config.php` file and configure the database connection:
+```php
+<?php
+$host = 'localhost';
+$dbname = 'banking_system';
+$username = 'root';  // Use your MySQL username
+$password = '';      // Use your MySQL password
+
+try {
+    $conn = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    echo "Connection failed: " . $e->getMessage();
+}
+?>
+```
+
+### 5. Run the Website
+1. Open your browser and go to `http://localhost/banking-website`.
+
+## How to Use
+
+- **Login**: Enter your username and password to access your account.
+- **Check Balance**: Once logged in, the current balance will be displayed on the dashboard.
+- **Withdraw Money**: Enter the amount you wish to withdraw and submit the form to update your balance.
+- **Transfer Money**: Select a recipient and enter the amount to transfer funds between accounts.
+- **View Transaction History**: You can view your past transactions under the transaction history section.
+
+## File Structure
+
+- `index.html`: The login page.
+- `dashboard.php`: The main page where users can check their balance, withdraw money, and transfer funds.
+- `withdraw.php`: The script handling withdrawal operations.
+- `transfer.php`: The script handling money transfer.
+- `transaction-history.php`: Displays the user's transaction history.
+- `config.php`: The database connection file.
+
+## Future Improvements
+- Adding proper authentication (password hashing).
+- Implementing a robust validation system for transactions.
+- Adding email notifications for transactions.
 
 home page
 ![p1](https://github.com/111faizan/banking_website/assets/95275307/d7cbcdf5-a97f-4011-a148-bfa772ae79eb)
